@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -27,6 +29,7 @@ public class BookListMainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecycleViewBookAdapter adapter;
     private ActivityResultLauncher<Intent> addBookLauncher;
+    private ActivityResultLauncher<Intent> editBookLauncher;
     private List<Book> bookList = getListBooks();
 
     @Override
@@ -62,6 +65,27 @@ public class BookListMainActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        //修改书籍的启动器
+        editBookLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK)
+                    {
+                        Intent data = result.getData();
+                        if (data != null) {
+                            String title = data.getStringExtra("title");
+                            int coverResourceId = data.getIntExtra("cover",R.drawable.book_2);
+                            int id = data.getIntExtra("id",0);
+                            bookList.set(id, new Book(title, coverResourceId));
+                            adapter.notifyItemChanged(id);
+                        }
+                    }
+                    else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                        //取消操作
+                    }
+                }
+        );
     }
 
     public List<Book> getListBooks() {
@@ -87,11 +111,33 @@ public class BookListMainActivity extends AppCompatActivity {
                 break;
             case 1:
                 // 编辑书籍
+                Intent editIntent = new Intent(BookListMainActivity.this, BookDetailsActivity.class);
+                editIntent.putExtra("id",item.getOrder());
+                editIntent.putExtra("title", bookList.get(item.getOrder()).getTitle());
+                editIntent.putExtra("cover", bookList.get(item.getOrder()).getCoverResourceId());
+                editBookLauncher.launch(editIntent);
                 break;
             case 2:
                 // 删除书籍
-                bookList.remove(item.getOrder());
-                adapter.notifyItemRemoved(item.getOrder());
+                AlertDialog alertDialog;
+                alertDialog = new AlertDialog.Builder(this)
+                        .setTitle("你正在删除书籍")
+                        .setMessage("是否确定删除？")
+                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                bookList.remove(item.getOrder());
+                                adapter.notifyItemRemoved(item.getOrder());
+                            }
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).create();
+                alertDialog.show();
+//                bookList.remove(item.getOrder());
+//                adapter.notifyItemRemoved(item.getOrder());
                 break;
             default:
                 return super.onContextItemSelected(item);
