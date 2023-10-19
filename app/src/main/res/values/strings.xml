@@ -2,4 +2,7 @@
     <string name="app_name">我的第一个应用</string>
     <string name="hello_world">Hello world</string>
     <string name="hello_android">你好Android</string>
+    <string name="hello">Hello</string>
+    <string name="jnu">JNU</string>
+    <string name="change_text">change text</string>
 </resources>
