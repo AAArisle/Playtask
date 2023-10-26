@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:longClickable="true"
-    tools:context=".BookListMainActivity">
-
+    tools:context=".BookListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_view_books"
@@ -13,8 +12,7 @@
         android:layout_height="match_parent">
 
 
-<!--        <include layout="@layout/item_layout" />-->
+        <!--        <include layout="@layout/item_layout" />-->
     </androidx.recyclerview.widget.RecyclerView>
-
 
 </LinearLayout>
