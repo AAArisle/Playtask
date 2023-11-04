@@ -22,7 +22,7 @@ public class PagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new WebViewFragment(); // 新闻Tab
             case 2:
-                return new WebViewFragment(); // 地图Tab
+                return new TencentMapFragment(); // 地图Tab
             default:
                 return null;
         }
