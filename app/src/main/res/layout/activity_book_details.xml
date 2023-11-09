@@ -13,20 +13,10 @@
         android:ems="10"
         android:inputType="text"
         android:text="更改书名"
-        app:layout_constraintBottom_toTopOf="@+id/button_edit"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_cover" />
-
-    <ImageView
-        android:id="@+id/image_cover"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/edit_text_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/book_no_name" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_back"
@@ -55,7 +45,19 @@
         android:text="图书名称"
         app:layout_constraintBottom_toTopOf="@+id/edit_text_title"
         app:layout_constraintEnd_toEndOf="@+id/button_back"
-        app:layout_constraintStart_toStartOf="@+id/edit_text_title"
-        app:layout_constraintTop_toBottomOf="@+id/image_cover" />
+        app:layout_constraintStart_toStartOf="@+id/button_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editText_Coin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name"
+        app:layout_constraintBottom_toTopOf="@+id/edit_text_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,6 +23,8 @@ public class PagerAdapter extends FragmentStateAdapter {
                 return new WebViewFragment(); // 新闻Tab
             case 2:
                 return new TencentMapFragment(); // 地图Tab
+            case 3:
+                return new TencentMapFragment(); // 地图Tab
             default:
                 return null;
         }
@@ -31,6 +33,6 @@ public class PagerAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         //Tab数目
-        return 3;
+        return 4;
     }
 }

@@ -3,14 +3,10 @@ package com.jnu.student;
 
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,18 +44,18 @@ public class RecycleViewBookAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public static class BookViewHolder extends RecyclerView.ViewHolder
             implements View.OnCreateContextMenuListener{
-        private ImageView imageViewBookCover;
+        private TextView textViewCoin;
         private TextView textViewBookTitle;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewBookCover = itemView.findViewById(R.id.image_view_book_cover);
+            textViewCoin = itemView.findViewById(R.id.text_view_coin);
             textViewBookTitle = itemView.findViewById(R.id.text_view_book_title);
             itemView.setOnCreateContextMenuListener(this);
         }
 
         public void bind(Book book) {
-            imageViewBookCover.setImageResource(book.getCoverResourceId());
+            textViewCoin.setText(book.getCoin());
             textViewBookTitle.setText(book.getTitle());
         }
 

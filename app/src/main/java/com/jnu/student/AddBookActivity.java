@@ -13,8 +13,8 @@ import android.widget.ImageView;
 
 public class AddBookActivity extends AppCompatActivity {
     // 其他书籍信息的EditText
-    private ImageView coverImageView;
     private EditText titleEditText;
+    private EditText coinEditText;
 
 
     @Override
@@ -23,7 +23,7 @@ public class AddBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_book);
 
         // 初始化其他书籍信息的EditText
-        coverImageView = findViewById(R.id.image_cover);
+        coinEditText = findViewById(R.id.editText_Coin);
         titleEditText = findViewById(R.id.edit_text_title);
 
         // 设置添加按钮的点击事件
@@ -34,6 +34,7 @@ public class AddBookActivity extends AppCompatActivity {
                 // 创建一个包含书籍信息的Intent
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("title", titleEditText.getText().toString());
+                resultIntent.putExtra("coin", coinEditText.getText().toString());
 
                 // 设置结果码为RESULT_OK，表示成功添加书籍
                 setResult(Activity.RESULT_OK, resultIntent);

@@ -26,13 +26,16 @@ public class MainActivity extends AppCompatActivity {
                 (tab, position) -> {
                     switch (position) {
                         case 0:
-                            tab.setText("图书");
+                            tab.setText("每日任务");
                             break;
                         case 1:
-                            tab.setText("新闻");
+                            tab.setText("每周任务");
                             break;
                         case 2:
-                            tab.setText("地图");
+                            tab.setText("普通任务");
+                            break;
+                        case 3:
+                            tab.setText("副本任务");
                             break;
                     }
                 }).attach();

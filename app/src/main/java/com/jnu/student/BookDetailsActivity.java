@@ -11,24 +11,24 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 public class BookDetailsActivity extends AppCompatActivity {
-    private ImageView coverImageView;
     private EditText titleEditText;
+    private EditText coinEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
 
-        coverImageView = findViewById(R.id.image_cover);
+        coinEditText = findViewById(R.id.editText_Coin);
         titleEditText = findViewById(R.id.edit_text_title);
 
         Intent intent = getIntent();
         int id = intent.getIntExtra("id",0);
         String title = intent.getStringExtra("title");
-        int coverResourceId = intent.getIntExtra("cover", R.drawable.book_2);
+        String coin = intent.getStringExtra("coin");
 
         titleEditText.setText(title);
-        coverImageView.setImageResource(coverResourceId);
+        coinEditText.setText(coin);
 
         // 设置修改按钮的点击事件
         Button addButton = findViewById(R.id.button_edit);
@@ -38,7 +38,7 @@ public class BookDetailsActivity extends AppCompatActivity {
                 // 创建一个包含书籍信息的Intent
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("title", titleEditText.getText().toString());
-                resultIntent.putExtra("cover",coverResourceId);
+                resultIntent.putExtra("coin",coinEditText.getText().toString());
                 resultIntent.putExtra("id",id);
 
                 // 设置结果码为RESULT_OK，表示成功修改书籍

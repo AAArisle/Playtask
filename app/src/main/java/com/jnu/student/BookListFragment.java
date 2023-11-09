@@ -43,9 +43,9 @@ public class BookListFragment extends Fragment {
         List<Book> bookList = new ArrayList<>();
         // 添加书籍数据到 bookList
         bookList.addAll(Arrays.asList(
-                new Book("软件项目管理案例教程（第4版）", R.drawable.book_2),
-                new Book("创新工程实践", R.drawable.book_no_name),
-                new Book("信息安全数学基础（第2版）", R.drawable.book_1)
+                new Book("任务1", "+10"),
+                new Book("任务2", "+20"),
+                new Book("任务3", "-30")
         ));
         return bookList;
     }
@@ -81,8 +81,8 @@ public class BookListFragment extends Fragment {
                         Intent data = result.getData();
                         if (data != null) {
                             String title = data.getStringExtra("title");
-//                            Toast.makeText(this,title,Toast.LENGTH_SHORT).show();
-                            bookList.add(new Book(title, R.drawable.book_no_name));
+                            String coin = data.getStringExtra("coin");
+                            bookList.add(new Book(title, coin));
                             adapter.notifyItemInserted(bookList.size());
                         }
                     }
@@ -101,9 +101,9 @@ public class BookListFragment extends Fragment {
                         Intent data = result.getData();
                         if (data != null) {
                             String title = data.getStringExtra("title");
-                            int coverResourceId = data.getIntExtra("cover",R.drawable.book_2);
+                            String coin = data.getStringExtra("coin");
                             int id = data.getIntExtra("id",0);
-                            bookList.set(id, new Book(title, coverResourceId));
+                            bookList.set(id, new Book(title, coin));
                             adapter.notifyItemChanged(id);
                         }
                     }
@@ -129,7 +129,7 @@ public class BookListFragment extends Fragment {
                 Intent editIntent = new Intent(this.getContext(), BookDetailsActivity.class);
                 editIntent.putExtra("id",item.getOrder());
                 editIntent.putExtra("title", bookList.get(item.getOrder()).getTitle());
-                editIntent.putExtra("cover", bookList.get(item.getOrder()).getCoverResourceId());
+                editIntent.putExtra("coin", bookList.get(item.getOrder()).getCoin());
                 editBookLauncher.launch(editIntent);
                 break;
             case 2:

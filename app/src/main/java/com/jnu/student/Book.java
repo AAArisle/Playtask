@@ -2,11 +2,11 @@ package com.jnu.student;
 
 public class Book {
     private String title;
-    private int coverResourceId;
+    private String coin;
 
-    public Book(String title, int coverResourceId) {
+    public Book(String title, String coin) {
         this.title = title;
-        this.coverResourceId = coverResourceId;
+        this.coin = coin;
     }
 
     //返回图书名称String
@@ -14,8 +14,8 @@ public class Book {
         return title;
     }
 
-    //返回封面图片资源Id
-    public int getCoverResourceId() {
-        return coverResourceId;
+    //返回任务积分
+    public String getCoin() {
+        return coin;
     }
 }
