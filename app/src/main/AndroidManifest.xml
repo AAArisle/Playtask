@@ -35,10 +35,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BookDetailsActivity"
+            android:name=".TaskDetailsActivity"
+            android:label="@string/add_name"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".AddBookActivity"
+            android:name=".AddTaskActivity"
+            android:label="@string/edit_name"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
 
         <meta-data

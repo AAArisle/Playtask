@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">PlayTask</string>
+    <string name="add_name">新建任务</string>
+    <string name="edit_name">编辑任务</string>
+    <string name="add_task">标题</string>
+    <string name="add_coin">成就点数</string>
+    <string name="add_num">数量（可选）</string>
+    <string name="add_tag">通过标签对任务进行分类</string>
+    <string name="add_ok">完成</string>
+    <string name="app_introduction">成就点数：指您每完成一次任务可获得的成就点数。\n
+                                    数量：指您此任务需要完成的次数。（默认为1次）\n
+                                    \n
+                                    每日任务：完成后次日凌晨两点重新出现。\n
+                                    参考：8点前起床、吃早餐、30分钟有氧运动\n
+                                    \n
+                                    每周任务：完成后下周一凌晨两点重新出现。\n
+                                    参考：整理房间、给家里打电话\n
+                                    \n
+                                    普通任务：完成后不再重新出现。</string>
 </resources>

@@ -22,57 +22,47 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BookListFragment extends Fragment {
+public class TaskListFragment extends Fragment {
     private RecyclerView recyclerView;
-    private RecycleViewBookAdapter adapter;
+    private RecycleViewTaskAdapter adapter;
     private ActivityResultLauncher<Intent> addBookLauncher;
     private ActivityResultLauncher<Intent> editBookLauncher;
-    private List<Book> bookList = getListBooks();
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public BookListFragment() {
+    private List<Task> taskList = getListTasks();
+    public TaskListFragment() {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
-    public List<Book> getListBooks() {
-        List<Book> bookList = new ArrayList<>();
-        // 添加书籍数据到 bookList
-        bookList.addAll(Arrays.asList(
-                new Book("任务1", "+10"),
-                new Book("任务2", "+20"),
-                new Book("任务3", "-30")
+    public List<Task> getListTasks() {
+        List<Task> taskList = new ArrayList<>();
+        // 添加任务数据到 taskList
+        taskList.addAll(Arrays.asList(
+                new Task("任务1", "+10",0),
+                new Task("任务2", "+20",0),
+                new Task("任务3", "-30",0)
         ));
-        return bookList;
+        return taskList;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_book_list_main);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_book_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_task_list, container, false);
 
         recyclerView = rootView.findViewById(R.id.recycle_view_books);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setLongClickable(true);
 
-        adapter = new RecycleViewBookAdapter(bookList);
+        adapter = new RecycleViewTaskAdapter(taskList);
         recyclerView.setAdapter(adapter);
 
         registerForContextMenu(recyclerView);       //注册ContextMenu
 
-        //添加书籍的启动器
+        //添加任务的启动器
         addBookLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -82,8 +72,9 @@ public class BookListFragment extends Fragment {
                         if (data != null) {
                             String title = data.getStringExtra("title");
                             String coin = data.getStringExtra("coin");
-                            bookList.add(new Book(title, coin));
-                            adapter.notifyItemInserted(bookList.size());
+                            int type = data.getIntExtra("type", 0);
+                            taskList.add(new Task(title, coin, type));
+                            adapter.notifyItemInserted(taskList.size());
                         }
                     }
                     else if (result.getResultCode() == Activity.RESULT_CANCELED) {
@@ -92,7 +83,7 @@ public class BookListFragment extends Fragment {
                 }
         );
 
-        //修改书籍的启动器
+        //修改任务的启动器
         editBookLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -102,8 +93,9 @@ public class BookListFragment extends Fragment {
                         if (data != null) {
                             String title = data.getStringExtra("title");
                             String coin = data.getStringExtra("coin");
+                            int type = data.getIntExtra("type",0);
                             int id = data.getIntExtra("id",0);
-                            bookList.set(id, new Book(title, coin));
+                            taskList.set(id, new Task(title, coin, type));
                             adapter.notifyItemChanged(id);
                         }
                     }
@@ -116,32 +108,33 @@ public class BookListFragment extends Fragment {
     }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Toast.makeText(this.getContext(),"操作成功"+item.getOrder(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(),"操作成功",Toast.LENGTH_SHORT).show();
 
         switch (item.getItemId()) {
             case 0:
-                // 启动另一个Activity来添加书籍
-                Intent addIntent = new Intent(this.getContext(), AddBookActivity.class);
+                // 启动另一个Activity来添加任务
+                Intent addIntent = new Intent(this.getContext(), AddTaskActivity.class);
                 addBookLauncher.launch(addIntent);
                 break;
             case 1:
-                // 编辑书籍
-                Intent editIntent = new Intent(this.getContext(), BookDetailsActivity.class);
+                // 编辑任务
+                Intent editIntent = new Intent(this.getContext(), TaskDetailsActivity.class);
                 editIntent.putExtra("id",item.getOrder());
-                editIntent.putExtra("title", bookList.get(item.getOrder()).getTitle());
-                editIntent.putExtra("coin", bookList.get(item.getOrder()).getCoin());
+                editIntent.putExtra("title", taskList.get(item.getOrder()).getTitle());
+                editIntent.putExtra("coin", taskList.get(item.getOrder()).getCoin());
+                editIntent.putExtra("type", taskList.get(item.getOrder()).getType());
                 editBookLauncher.launch(editIntent);
                 break;
             case 2:
-                // 删除书籍
+                // 删除任务
                 AlertDialog alertDialog;
                 alertDialog = new AlertDialog.Builder(this.getContext())
-                        .setTitle("你正在删除书籍")
+                        .setTitle("你正在删除任务")
                         .setMessage("是否确定删除？")
                         .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                bookList.remove(item.getOrder());
+                                taskList.remove(item.getOrder());
                                 adapter.notifyItemRemoved(item.getOrder());
                             }
                         }).setNegativeButton("取消", new DialogInterface.OnClickListener() {

@@ -5,7 +5,6 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,11 +14,11 @@ import java.util.List;
 
 
 
-public class RecycleViewBookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Book> bookList;
+public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private List<Task> taskList;
 
-    public RecycleViewBookAdapter(List<Book> bookList) {
-        this.bookList = bookList;
+    public RecycleViewTaskAdapter(List<Task> taskList) {
+        this.taskList = taskList;
     }
 
     @NonNull
@@ -33,13 +32,13 @@ public class RecycleViewBookAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         BookViewHolder bookViewHolder = (BookViewHolder) holder;
-        Book book = bookList.get(position);
-        bookViewHolder.bind(book);
+        Task task = taskList.get(position);
+        bookViewHolder.bind(task);
     }
 
     @Override
     public int getItemCount() {
-        return bookList.size();
+        return taskList.size();
     }
 
     public static class BookViewHolder extends RecyclerView.ViewHolder
@@ -54,9 +53,9 @@ public class RecycleViewBookAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             itemView.setOnCreateContextMenuListener(this);
         }
 
-        public void bind(Book book) {
-            textViewCoin.setText(book.getCoin());
-            textViewBookTitle.setText(book.getTitle());
+        public void bind(Task task) {
+            textViewCoin.setText(task.getCoin());
+            textViewBookTitle.setText(task.getTitle());
         }
 
         @Override
