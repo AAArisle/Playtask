@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,7 @@ import android.widget.Spinner;
 public class TaskDetailsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private EditText titleEditText;
     private EditText coinEditText;
+    private EditText timesEditText;
     private Spinner taskTpyeSpinner;
     private final static String[] taskTpyeArray = {"每日任务","每周任务","普通任务"};
 
@@ -26,6 +28,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements AdapterVie
 
         coinEditText = findViewById(R.id.editText_Coin);
         titleEditText = findViewById(R.id.edit_text_title);
+        timesEditText = findViewById(R.id.editText_Number);
         // 下拉栏
         taskTpyeSpinner = findViewById(R.id.spinner_taskType);
 
@@ -33,11 +36,13 @@ public class TaskDetailsActivity extends AppCompatActivity implements AdapterVie
         int id = intent.getIntExtra("id",0);
         String title = intent.getStringExtra("title");
         String coin = intent.getStringExtra("coin");
+        int times = intent.getIntExtra("times",1);
         int type = intent.getIntExtra("type",0);
 
         // 把原来的信息显示出来
         titleEditText.setText(title);
         coinEditText.setText(coin);
+        timesEditText.setText(String.valueOf(times));
 
         // 设置修改按钮的点击事件
         Button addButton = findViewById(R.id.button_ok);
@@ -48,6 +53,7 @@ public class TaskDetailsActivity extends AppCompatActivity implements AdapterVie
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("title", titleEditText.getText().toString());
                 resultIntent.putExtra("coin",coinEditText.getText().toString());
+                resultIntent.putExtra("times", Integer.parseInt(timesEditText.getText().toString()));
                 resultIntent.putExtra("id",id);
 
                 // 设置结果码为RESULT_OK，表示成功修改
@@ -70,6 +76,16 @@ public class TaskDetailsActivity extends AppCompatActivity implements AdapterVie
         taskTpyeSpinner.setAdapter(startAdapter);
         // 设置显示原来的选项
         taskTpyeSpinner.setSelection(type);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // 处理Home按钮点击事件
+            // 不执行任何操作，而不是重新初始化主屏幕
+            finish();
+            return true; // 返回true拦截事件
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

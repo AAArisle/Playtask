@@ -16,36 +16,34 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TaskListFragment extends Fragment {
+public class TaskListFragment extends Fragment implements RecycleViewTaskAdapter.SignalListener{
     private RecyclerView recyclerView;
+    private TextView coinsTextView;
     private RecycleViewTaskAdapter adapter;
     private ActivityResultLauncher<Intent> addBookLauncher;
     private ActivityResultLauncher<Intent> editBookLauncher;
-    private List<Task> taskList = getListTasks();
+    private static List<Task> taskList;
     public TaskListFragment() {
         // Required empty public constructor
-    }
-
-    public List<Task> getListTasks() {
-        List<Task> taskList = new ArrayList<>();
-        // 添加任务数据到 taskList
-        taskList.addAll(Arrays.asList(
-                new Task("任务1", "+10",0),
-                new Task("任务2", "+20",0),
-                new Task("任务3", "-30",0)
-        ));
-        return taskList;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        taskList = new ArrayList<>();
+        // 添加任务数据到 taskList
+        taskList.addAll(Arrays.asList(
+                new Task("任务1", "10", 1, 0),
+                new Task("任务2", "20", 1, 0),
+                new Task("任务3", "30", 1, 0)
+        ));
     }
 
     @Override
@@ -53,14 +51,18 @@ public class TaskListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_task_list, container, false);
 
-        recyclerView = rootView.findViewById(R.id.recycle_view_books);
+        recyclerView = rootView.findViewById(R.id.recycle_view_tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setLongClickable(true);
 
         adapter = new RecycleViewTaskAdapter(taskList);
         recyclerView.setAdapter(adapter);
+        adapter.setSignalListener(this);
 
         registerForContextMenu(recyclerView);       //注册ContextMenu
+
+        coinsTextView = rootView.findViewById(R.id.textView_coins);
+        coinsTextView.setText(String.valueOf(Coins.coins));
 
         //添加任务的启动器
         addBookLauncher = registerForActivityResult(
@@ -72,12 +74,13 @@ public class TaskListFragment extends Fragment {
                         if (data != null) {
                             String title = data.getStringExtra("title");
                             String coin = data.getStringExtra("coin");
+                            int times = data.getIntExtra("times",1);
                             int type = data.getIntExtra("type", 0);
-                            taskList.add(new Task(title, coin, type));
+                            taskList.add(new Task(title, coin, times, type));
                             adapter.notifyItemInserted(taskList.size());
                         }
                     }
-                    else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                    else{
                         //取消操作
                     }
                 }
@@ -94,12 +97,13 @@ public class TaskListFragment extends Fragment {
                             String title = data.getStringExtra("title");
                             String coin = data.getStringExtra("coin");
                             int type = data.getIntExtra("type",0);
+                            int times = data.getIntExtra("times",1);
                             int id = data.getIntExtra("id",0);
-                            taskList.set(id, new Task(title, coin, type));
+                            taskList.set(id, new Task(title, coin, times, type));
                             adapter.notifyItemChanged(id);
                         }
                     }
-                    else if (result.getResultCode() == Activity.RESULT_CANCELED) {
+                    else{
                         //取消操作
                     }
                 }
@@ -122,6 +126,7 @@ public class TaskListFragment extends Fragment {
                 editIntent.putExtra("id",item.getOrder());
                 editIntent.putExtra("title", taskList.get(item.getOrder()).getTitle());
                 editIntent.putExtra("coin", taskList.get(item.getOrder()).getCoin());
+                editIntent.putExtra("times", taskList.get(item.getOrder()).getTimes());
                 editIntent.putExtra("type", taskList.get(item.getOrder()).getType());
                 editBookLauncher.launch(editIntent);
                 break;
@@ -149,5 +154,10 @@ public class TaskListFragment extends Fragment {
                 return super.onContextItemSelected(item);
         }
         return true;
+    }
+
+    @Override
+    public void onSignalReceived() {
+        coinsTextView.setText(String.valueOf(Coins.coins));
     }
 }

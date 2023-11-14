@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +20,7 @@ public class AddTaskActivity extends AppCompatActivity implements AdapterView.On
     // 新任务信息的EditText
     private EditText titleEditText;
     private EditText coinEditText;
+    private EditText timesEditText;
     // 下拉栏
     private Spinner taskTpyeSpinner;
     private final static String[] taskTpyeArray = {"每日任务","每周任务","普通任务"};
@@ -32,6 +34,7 @@ public class AddTaskActivity extends AppCompatActivity implements AdapterView.On
         // 初始化新任务信息的EditText
         coinEditText = findViewById(R.id.editText_Coin);
         titleEditText = findViewById(R.id.edit_text_title);
+        timesEditText = findViewById(R.id.editText_Number);
         // 下拉栏
         taskTpyeSpinner = findViewById(R.id.spinner_taskType);
 
@@ -52,6 +55,9 @@ public class AddTaskActivity extends AppCompatActivity implements AdapterView.On
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("title", titleEditText.getText().toString());
                 resultIntent.putExtra("coin", coinEditText.getText().toString());
+                if (!(timesEditText.getText().toString().isEmpty())){
+                    resultIntent.putExtra("times", Integer.parseInt(timesEditText.getText().toString()));
+                }
                 resultIntent.putExtra("type", taskTpyeSpinner.getSelectedItemPosition());
 
                 // 设置结果码为RESULT_OK，表示成功添加
@@ -74,6 +80,16 @@ public class AddTaskActivity extends AppCompatActivity implements AdapterView.On
         taskTpyeSpinner.setAdapter(startAdapter);
         // 设置默认显示第一项
         taskTpyeSpinner.setSelection(0);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // 处理Home按钮点击事件
+            // 不执行任何操作，而不是重新初始化主屏幕
+            finish();
+            return true; // 返回true拦截事件
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

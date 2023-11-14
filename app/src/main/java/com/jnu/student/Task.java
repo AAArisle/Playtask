@@ -4,10 +4,15 @@ public class Task {
     private String title;
     private String coin;
     private int type;
+    private int pin = 0;
+    private int complete = 0;
+    private int times = 1;
+    private String tags;
 
-    public Task(String title, String coin, int type) {
+    public Task(String title, String coin, int times, int type) {
         this.title = title;
         this.coin = coin;
+        this.times = times;
         this.type = type;
     }
 
@@ -24,5 +29,52 @@ public class Task {
     //返回任务类型
     public int getType(){
         return type;
+    }
+    public boolean isPinned(){
+        if (pin == 0){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public void changePinned(boolean ispinned) {
+        if (ispinned){
+            this.pin = 0;
+        }
+        else {
+            this.pin = 1;
+        }
+    }
+
+    public boolean isCompleted() {
+        if (this.complete == this.times){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public void setCompleted(boolean checked) {
+        if (checked){
+            this.complete++;
+        }
+        else {
+            this.complete--;
+        }
+    }
+
+    public int getComplete(){
+        return this.complete;
+    }
+
+    public int getTimes(){
+        return this.times;
+    }
+
+    public void setTags(String tag){
+        this.tags = tag;
     }
 }
