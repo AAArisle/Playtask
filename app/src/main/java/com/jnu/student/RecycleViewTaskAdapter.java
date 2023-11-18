@@ -1,6 +1,7 @@
 package com.jnu.student;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import java.util.List;
 public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<Task> taskList;
     private static SignalListener signalListener;
+    private OnItemClickListener onItemClickListener;
 
     public void setSignalListener(SignalListener listener) {
         signalListener = listener;
@@ -27,6 +29,14 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public RecycleViewTaskAdapter(List<Task> taskList) {
         this.taskList = taskList;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 
     @NonNull
@@ -38,10 +48,20 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         BookViewHolder bookViewHolder = (BookViewHolder) holder;
         Task task = taskList.get(position);
         bookViewHolder.bind(task);
+
+        // 设置Item的点击事件监听器
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -95,6 +115,7 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             });
 
+            checkBox.setChecked(task.isCompleted());
             // 设置 checkBox 的点击监听器，用于处理任务完成状态的变化
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -120,10 +141,8 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v,
                                         ContextMenu.ContextMenuInfo menuInfo) {
-            menu.setHeaderTitle("具体操作");
-            menu.add(0, 0, this.getAdapterPosition(), "增加"+this.getAdapterPosition());
-            menu.add(0, 1, this.getAdapterPosition(), "修改"+this.getAdapterPosition());
-            menu.add(0, 2, this.getAdapterPosition(), "删除"+this.getAdapterPosition());
+            menu.add(0, 0, this.getAdapterPosition(), "添加提醒");
+            menu.add(0, 1, this.getAdapterPosition(), "删除");
         }
 
     }

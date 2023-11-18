@@ -78,16 +78,6 @@ public class TaskDetailsActivity extends AppCompatActivity implements AdapterVie
         taskTpyeSpinner.setSelection(type);
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            // 处理Home按钮点击事件
-            // 不执行任何操作，而不是重新初始化主屏幕
-            finish();
-            return true; // 返回true拦截事件
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 

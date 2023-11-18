@@ -2,6 +2,9 @@
     <string name="app_name">PlayTask</string>
     <string name="add_name">新建任务</string>
     <string name="edit_name">编辑任务</string>
+    <string name="join_name">加入副本</string>
+    <string name="sort_name">排序</string>
+    <string name="add_menu">添加菜单</string>
     <string name="add_task">标题</string>
     <string name="add_coin">成就点数</string>
     <string name="add_num">数量（可选）</string>

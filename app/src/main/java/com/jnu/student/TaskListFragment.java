@@ -8,11 +8,14 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,27 +26,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TaskListFragment extends Fragment implements RecycleViewTaskAdapter.SignalListener{
+public class TaskListFragment extends Fragment
+        implements RecycleViewTaskAdapter.SignalListener, RecycleViewTaskAdapter.OnItemClickListener{
     private RecyclerView recyclerView;
     private TextView coinsTextView;
     private RecycleViewTaskAdapter adapter;
-    private ActivityResultLauncher<Intent> addBookLauncher;
-    private ActivityResultLauncher<Intent> editBookLauncher;
-    private static List<Task> taskList;
+    private ActivityResultLauncher<Intent> addTaskLauncher;
+    private ActivityResultLauncher<Intent> editTaskLauncher;
+    private static List<Task> taskList = new ArrayList<>();
     public TaskListFragment() {
         // Required empty public constructor
     }
 
     @Override
+    public void onItemClick(int position) {
+        // 处理 Item 的点击事件
+        // 根据 position 获取相应的数据或执行相应的操作
+        // 编辑任务
+        Intent editIntent = new Intent(this.getContext(), TaskDetailsActivity.class);
+        editIntent.putExtra("id",position);
+        editIntent.putExtra("title", taskList.get(position).getTitle());
+        editIntent.putExtra("coin", taskList.get(position).getCoin());
+        editIntent.putExtra("times", taskList.get(position).getTimes());
+        editIntent.putExtra("type", taskList.get(position).getType());
+        editTaskLauncher.launch(editIntent);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
-        taskList = new ArrayList<>();
-        // 添加任务数据到 taskList
-        taskList.addAll(Arrays.asList(
-                new Task("任务1", "10", 1, 0),
-                new Task("任务2", "20", 1, 0),
-                new Task("任务3", "30", 1, 0)
-        ));
     }
 
     @Override
@@ -65,29 +77,24 @@ public class TaskListFragment extends Fragment implements RecycleViewTaskAdapter
         coinsTextView.setText(String.valueOf(Coins.coins));
 
         //添加任务的启动器
-        addBookLauncher = registerForActivityResult(
+        addTaskLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK)
-                    {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         if (data != null) {
                             String title = data.getStringExtra("title");
                             String coin = data.getStringExtra("coin");
-                            int times = data.getIntExtra("times",1);
+                            int times = data.getIntExtra("times", 1);
                             int type = data.getIntExtra("type", 0);
                             taskList.add(new Task(title, coin, times, type));
                             adapter.notifyItemInserted(taskList.size());
                         }
                     }
-                    else{
-                        //取消操作
-                    }
-                }
-        );
+                });
 
         //修改任务的启动器
-        editBookLauncher = registerForActivityResult(
+        editTaskLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK)
@@ -103,34 +110,20 @@ public class TaskListFragment extends Fragment implements RecycleViewTaskAdapter
                             adapter.notifyItemChanged(id);
                         }
                     }
-                    else{
-                        //取消操作
-                    }
-                }
-        );
+                });
+
+        // 设置Item的点击事件监听器
+        adapter.setOnItemClickListener(this);
+
         return rootView;
     }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Toast.makeText(this.getContext(),"操作成功",Toast.LENGTH_SHORT).show();
-
         switch (item.getItemId()) {
             case 0:
-                // 启动另一个Activity来添加任务
-                Intent addIntent = new Intent(this.getContext(), AddTaskActivity.class);
-                addBookLauncher.launch(addIntent);
+                // 添加提醒
                 break;
             case 1:
-                // 编辑任务
-                Intent editIntent = new Intent(this.getContext(), TaskDetailsActivity.class);
-                editIntent.putExtra("id",item.getOrder());
-                editIntent.putExtra("title", taskList.get(item.getOrder()).getTitle());
-                editIntent.putExtra("coin", taskList.get(item.getOrder()).getCoin());
-                editIntent.putExtra("times", taskList.get(item.getOrder()).getTimes());
-                editIntent.putExtra("type", taskList.get(item.getOrder()).getType());
-                editBookLauncher.launch(editIntent);
-                break;
-            case 2:
                 // 删除任务
                 AlertDialog alertDialog;
                 alertDialog = new AlertDialog.Builder(this.getContext())
@@ -155,9 +148,32 @@ public class TaskListFragment extends Fragment implements RecycleViewTaskAdapter
         }
         return true;
     }
-
+    
     @Override
     public void onSignalReceived() {
         coinsTextView.setText(String.valueOf(Coins.coins));
+    }
+
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        //使用菜单填充器获取menu下的菜单资源文件
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.tool_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_add_task) {
+            // 启动另一个Activity来添加任务
+            Intent addIntent = new Intent(this.getContext(), AddTaskActivity.class);
+            addTaskLauncher.launch(addIntent);
+        }
+        else if (item.getItemId() == R.id.action_join_duty) {
+            // 加入副本
+        }
+        else if (item.getItemId() == R.id.action_sort) {
+            //排序
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

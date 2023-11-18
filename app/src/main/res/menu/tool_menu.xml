@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add_menu"
+        android:icon="@drawable/plus"
+        android:title="@string/add_menu"
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/action_add_task"
+                android:title="@string/add_name"/>
+            <item
+                android:id="@+id/action_join_duty"
+                android:title="@string/join_name"/>
+            <item
+                android:id="@+id/action_sort"
+                android:title="@string/sort_name"/>
+        </menu>
+
+    </item>
+</menu>
