@@ -13,9 +13,6 @@
                 android:id="@+id/action_add_task"
                 android:title="@string/add_name"/>
             <item
-                android:id="@+id/action_join_duty"
-                android:title="@string/join_name"/>
-            <item
                 android:id="@+id/action_sort"
                 android:title="@string/sort_name"/>
         </menu>

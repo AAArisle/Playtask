@@ -141,7 +141,6 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v,
                                         ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(0, 0, this.getAdapterPosition(), "添加提醒");
             menu.add(0, 1, this.getAdapterPosition(), "删除");
         }
 

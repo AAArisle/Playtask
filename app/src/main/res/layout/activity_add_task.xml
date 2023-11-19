@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TaskDetailsActivity">
+    tools:context=".EditTaskActivity">
 
     <EditText
         android:id="@+id/edit_text_title"
@@ -65,19 +65,6 @@
         app:layout_constraintStart_toEndOf="@+id/editText_Number"
         app:layout_constraintTop_toBottomOf="@+id/editText_Coin" />
 
-    <MultiAutoCompleteTextView
-        android:id="@+id/textView_tag"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/add_tag"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_Number" />
-
     <Button
         android:id="@+id/button_ok"
         android:layout_width="0dp"
@@ -89,7 +76,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_tag" />
+        app:layout_constraintTop_toBottomOf="@+id/editText_Number" />
 
     <TextView
         android:id="@+id/textView_introduction"

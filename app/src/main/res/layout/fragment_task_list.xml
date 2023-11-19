@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:longClickable="true"
     android:orientation="vertical"
-    tools:context=".TaskListFragment">
+    tools:context=".DailyTaskFragment">
 
     <ImageView
         android:id="@+id/imageView_divider1"
@@ -14,14 +14,30 @@
         android:scaleType="fitXY"
         android:src="@drawable/divider_line" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_view_tasks"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_view_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/textView_task_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center"
+            android:maxLines="2"
+            android:autoSizeTextType="uniform"
+            android:text="@string/task_empty" />
+    </FrameLayout>
 
     <ImageView
-        android:id="@+id/imageView_divider1"
+        android:id="@+id/imageView_divider2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"

@@ -1,13 +1,18 @@
 package com.jnu.student;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Task {
+    public static List<Task> taskList0 = new ArrayList<>(); //每日任务
+    public static List<Task> taskList1 = new ArrayList<>(); //每周任务
+    public static List<Task> taskList2 = new ArrayList<>(); //普通任务
     private String title;
     private String coin;
     private int type;
     private int pin = 0;
     private int complete = 0;
     private int times = 1;
-    private String tags;
 
     public Task(String title, String coin, int times, int type) {
         this.title = title;
@@ -72,9 +77,5 @@ public class Task {
 
     public int getTimes(){
         return this.times;
-    }
-
-    public void setTags(String tag){
-        this.tags = tag;
     }
 }

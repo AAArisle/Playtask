@@ -17,13 +17,11 @@ public class PagerAdapter extends FragmentStateAdapter {
         //获得Tab对应的Fragment
         switch (position) {
             case 0:
-                return new TaskListFragment(); // 图书Tab
+                return new DailyTaskFragment(); // 每日任务
             case 1:
-                return new WebViewFragment(); // 新闻Tab
+                return new WeeklyTaskFragment(); // 每周任务
             case 2:
-                return new TencentMapFragment(); // 地图Tab
-            case 3:
-                return new TencentMapFragment(); // 地图Tab
+                return new NormalTaskFragment(); // 普通任务
             default:
                 return null;
         }
@@ -32,6 +30,6 @@ public class PagerAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         //Tab数目
-        return 4;
+        return 3;
     }
 }
