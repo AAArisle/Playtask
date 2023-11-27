@@ -2,26 +2,29 @@ package com.jnu.student;
 
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.List;
 
 
 
 public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final List<Task> taskList;
+    List<Task> taskList;
     private static SignalListener signalListener;
     private OnItemClickListener onItemClickListener;
+    boolean isSortVisible = false;
 
     public void setSignalListener(SignalListener listener) {
         signalListener = listener;
@@ -44,14 +47,14 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
 
-        return new BookViewHolder(view);
+        return new TaskViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        BookViewHolder bookViewHolder = (BookViewHolder) holder;
+        TaskViewHolder taskViewHolder = (TaskViewHolder) holder;
         Task task = taskList.get(position);
-        bookViewHolder.bind(task);
+        taskViewHolder.bind(task);
 
         // 设置Item的点击事件监听器
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -69,20 +72,22 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return taskList.size();
     }
 
-    public static class BookViewHolder extends RecyclerView.ViewHolder
+    public class TaskViewHolder extends RecyclerView.ViewHolder
             implements View.OnCreateContextMenuListener{
         private final CheckBox checkBox;
         private final TextView textViewCoin;
         private final TextView textViewTaskTitle;
         private final ImageButton pinImageButton;
+        private final ImageView sortImageView;
         private final TextView textViewTimes;
 
-        public BookViewHolder(@NonNull View itemView) {
+        public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.checkBox);
             textViewCoin = itemView.findViewById(R.id.text_view_coin);
             textViewTaskTitle = itemView.findViewById(R.id.text_view_task_title);
             pinImageButton = itemView.findViewById(R.id.imageButton_pin);
+            sortImageView = itemView.findViewById(R.id.imageView_sort);
             textViewTimes = itemView.findViewById(R.id.textView_times);
             itemView.setOnCreateContextMenuListener(this);
         }
@@ -103,14 +108,16 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             pinImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // 切换任务的置顶状态
-                    task.changePinned(task.isPinned());
+                    if (!isSortVisible) {
+                        // 切换任务的置顶状态
+                        task.changePinned(task.isPinned());
 
-                    // 根据任务的置顶状态设置相应的图标
-                    if (task.isPinned()) {
-                        pinImageButton.setImageResource(R.drawable.pin_checked);
-                    } else {
-                        pinImageButton.setImageResource(R.drawable.pin_unchecked);
+                        // 根据任务的置顶状态设置相应的图标
+                        if (task.isPinned()) {
+                            pinImageButton.setImageResource(R.drawable.pin_checked);
+                        } else {
+                            pinImageButton.setImageResource(R.drawable.pin_unchecked);
+                        }
                     }
                 }
             });
@@ -136,14 +143,22 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     textViewTimes.setText(task.getComplete() +"/"+ task.getTimes());
                 }
             });
+
+            // 设置排序图标的可见性
+            if (isSortVisible) {
+                sortImageView.setVisibility(View.VISIBLE);
+            } else {
+                sortImageView.setVisibility(View.GONE);
+            }
         }
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v,
                                         ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(0, 1, this.getAdapterPosition(), "删除");
+            if (!isSortVisible) {
+                menu.add(0, 1, this.getAdapterPosition(), "删除");
+            }
         }
-
     }
 
     public interface SignalListener {

@@ -21,8 +21,11 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Collections;
 
 public class NormalTaskFragment extends Fragment
         implements RecycleViewTaskAdapter.SignalListener, RecycleViewTaskAdapter.OnItemClickListener {
@@ -42,13 +45,15 @@ public class NormalTaskFragment extends Fragment
         // 处理 Item 的点击事件
         // 根据 position 获取相应的数据或执行相应的操作
         // 编辑任务
-        Intent editIntent = new Intent(this.getContext(), EditTaskActivity.class);
-        editIntent.putExtra("id",position);
-        editIntent.putExtra("title", taskList2.get(position).getTitle());
-        editIntent.putExtra("coin", taskList2.get(position).getCoin());
-        editIntent.putExtra("times", taskList2.get(position).getTimes());
-        editIntent.putExtra("type", taskList2.get(position).getType());
-        editTaskLauncher.launch(editIntent);
+        if (!adapter.isSortVisible) {
+            Intent editIntent = new Intent(this.getContext(), EditTaskActivity.class);
+            editIntent.putExtra("id", position);
+            editIntent.putExtra("title", taskList2.get(position).getTitle());
+            editIntent.putExtra("coin", taskList2.get(position).getCoin());
+            editIntent.putExtra("times", taskList2.get(position).getTimes());
+            editIntent.putExtra("type", taskList2.get(position).getType());
+            editTaskLauncher.launch(editIntent);
+        }
     }
 
     @Override
@@ -69,6 +74,47 @@ public class NormalTaskFragment extends Fragment
         adapter = new RecycleViewTaskAdapter(taskList2);
         recyclerView.setAdapter(adapter);
         adapter.setSignalListener(this);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                int dragFlags;
+                if (adapter.isSortVisible) {
+                    dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN; //拖动
+                }
+                else {
+                    dragFlags = 0; //禁用
+                }
+                int swipeFlags = 0; //滑动
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                int fromPosition = viewHolder.getAdapterPosition();
+                int toPosition = target.getAdapterPosition();
+                if (fromPosition < toPosition){
+                    for (int i = fromPosition; i < toPosition; i++)
+                    {
+                        Collections.swap(adapter.taskList, i , i+1);
+                    }
+                }
+                else {
+                    for (int i = fromPosition; i > toPosition; i--)
+                    {
+                        Collections.swap(adapter.taskList, i , i-1);
+                    }
+                }
+                adapter.notifyItemMoved(fromPosition, toPosition);
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         emptyTextView = rootView.findViewById(R.id.textView_task_empty);
         // 初始化 Empty View 的可见性
@@ -215,8 +261,26 @@ public class NormalTaskFragment extends Fragment
         }
         else if (item.getItemId() == R.id.action_sort) {
             //排序
+            adapter.isSortVisible = true;
+            adapter.notifyDataSetChanged();
+            requireActivity().invalidateOptionsMenu(); // 触发 onPrepareOptionsMenu() 调用
+        }
+        else if (item.getItemId() == R.id.action_sort_finish) {
+            //排序完成
+            adapter.isSortVisible = false;
+            adapter.notifyDataSetChanged();
+            requireActivity().invalidateOptionsMenu(); // 触发 onPrepareOptionsMenu() 调用
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem sortFinishMenuItem = menu.findItem(R.id.action_sort_finish);
+        MenuItem addMenuItem = menu.findItem(R.id.action_add_menu);
+        sortFinishMenuItem.setVisible(adapter.isSortVisible);
+        addMenuItem.setVisible(!adapter.isSortVisible);
     }
 }

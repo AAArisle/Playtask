@@ -3,11 +3,11 @@
     <string name="add_name">新建任务</string>
     <string name="edit_name">编辑任务</string>
     <string name="sort_name">排序</string>
-    <string name="add_menu">添加菜单</string>
+    <string name="add_menu">菜单</string>
     <string name="add_task">标题</string>
     <string name="add_coin">成就点数</string>
     <string name="add_num">数量（可选）</string>
-    <string name="add_ok">完成</string>
+    <string name="action_ok">完成</string>
     <string name="app_introduction">成就点数：指您每完成一次任务可获得的成就点数。\n
                                     数量：指您此任务需要完成的次数。（默认为1次）\n
                                     \n
