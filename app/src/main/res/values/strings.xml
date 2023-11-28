@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">PlayTask</string>
+    <string name="task_name">任务</string>
+    <string name="reward_name">奖励</string>
     <string name="add_name">新建任务</string>
     <string name="edit_name">编辑任务</string>
     <string name="sort_name">排序</string>
@@ -20,6 +22,6 @@
                                     普通任务：完成后不再重新出现。</string>
     <string name="task_empty">无任务\n
                               Yesterday, you said tomorrow.</string>
-    <string name="completed_empty">无已完成任务\n
-                                   赶紧去完成任务吧</string>
+    <string name="reward_empty">无奖励\n
+                                Freud believed that, there are many primitive desires and impulses stored in the human subconscious.</string>
 </resources>

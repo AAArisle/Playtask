@@ -5,8 +5,6 @@ import static com.jnu.student.Task.taskList1;
 import static com.jnu.student.Task.taskList2;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -65,7 +63,7 @@ public class NormalTaskFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_task_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_task, container, false);
 
         recyclerView = rootView.findViewById(R.id.recycle_view_tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -177,17 +175,17 @@ public class NormalTaskFragment extends Fragment
                             int times = data.getIntExtra("times", 1);
                             int type = data.getIntExtra("type", 0);
                             if (type == 0) {
-                                MainActivity.viewPager.setCurrentItem(0);
+                                TaskListFragment.viewPager.setCurrentItem(0);
                                 taskList0.add(new Task(title, coin, times, type));
                                 DailyTaskFragment.adapter.notifyItemInserted(taskList0.size());
                             }
                             else if (type == 1) {
-                                MainActivity.viewPager.setCurrentItem(1);
+                                TaskListFragment.viewPager.setCurrentItem(1);
                                 taskList1.add(new Task(title, coin, times, type));
                                 WeeklyTaskFragment.adapter.notifyItemInserted(taskList1.size());
                             }
                             else if (type == 2) {
-                                MainActivity.viewPager.setCurrentItem(2);
+                                TaskListFragment.viewPager.setCurrentItem(2);
                                 taskList2.add(new Task(title, coin, times, type));
                                 NormalTaskFragment.adapter.notifyItemInserted(taskList2.size());
                             }
@@ -212,21 +210,21 @@ public class NormalTaskFragment extends Fragment
                             int times = data.getIntExtra("times",1);
                             int id = data.getIntExtra("id",0);
                             if (type == 0) {
-                                MainActivity.viewPager.setCurrentItem(0);
+                                TaskListFragment.viewPager.setCurrentItem(0);
                                 taskList2.remove(id);
                                 NormalTaskFragment.adapter.notifyItemRemoved(id);
                                 taskList0.add(new Task(title, coin, times, type));
                                 DailyTaskFragment.adapter.notifyItemInserted(taskList0.size());
                             }
                             else if (type == 1) {
-                                MainActivity.viewPager.setCurrentItem(1);
+                                TaskListFragment.viewPager.setCurrentItem(1);
                                 taskList2.remove(id);
                                 NormalTaskFragment.adapter.notifyItemRemoved(id);
                                 taskList1.add(new Task(title, coin, times, type));
                                 WeeklyTaskFragment.adapter.notifyItemInserted(taskList1.size());
                             }
                             else if (type == 2) {
-                                MainActivity.viewPager.setCurrentItem(2);
+                                TaskListFragment.viewPager.setCurrentItem(2);
                                 taskList2.set(id, new Task(title, coin, times, type));
                                 WeeklyTaskFragment.adapter.notifyItemChanged(id);
                             }

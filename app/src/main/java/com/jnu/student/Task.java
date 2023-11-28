@@ -7,7 +7,6 @@ public class Task {
     public static List<Task> taskList0 = new ArrayList<>(); //每日任务
     public static List<Task> taskList1 = new ArrayList<>(); //每周任务
     public static List<Task> taskList2 = new ArrayList<>(); //普通任务
-    public static int Pinned_Tasks = 0; //钉住任务数
     private String title;
     private String coin;
     private int type;

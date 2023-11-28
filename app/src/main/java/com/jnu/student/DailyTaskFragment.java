@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
-import java.util.Objects;
 
 public class DailyTaskFragment extends Fragment
         implements RecycleViewTaskAdapter.SignalListener, RecycleViewTaskAdapter.OnItemClickListener{
@@ -66,7 +65,7 @@ public class DailyTaskFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_task_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_task, container, false);
 
         recyclerView = rootView.findViewById(R.id.recycle_view_tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -178,17 +177,17 @@ public class DailyTaskFragment extends Fragment
                             int times = data.getIntExtra("times", 1);
                             int type = data.getIntExtra("type", 0);
                             if (type == 0) {
-                                MainActivity.viewPager.setCurrentItem(0);
+                                TaskListFragment.viewPager.setCurrentItem(0);
                                 taskList0.add(new Task(title, coin, times, type));
                                 DailyTaskFragment.adapter.notifyItemInserted(taskList0.size());
                             }
                             else if (type == 1) {
-                                MainActivity.viewPager.setCurrentItem(1);
+                                TaskListFragment.viewPager.setCurrentItem(1);
                                 taskList1.add(new Task(title, coin, times, type));
                                 WeeklyTaskFragment.adapter.notifyItemInserted(taskList1.size());
                             }
                             else if (type == 2) {
-                                MainActivity.viewPager.setCurrentItem(2);
+                                TaskListFragment.viewPager.setCurrentItem(2);
                                 taskList2.add(new Task(title, coin, times, type));
                                 NormalTaskFragment.adapter.notifyItemInserted(taskList2.size());
                             }
@@ -213,19 +212,19 @@ public class DailyTaskFragment extends Fragment
                             int times = data.getIntExtra("times",1);
                             int id = data.getIntExtra("id",0);
                             if (type == 0) {
-                                MainActivity.viewPager.setCurrentItem(0);
+                                TaskListFragment.viewPager.setCurrentItem(0);
                                 taskList0.set(id, new Task(title, coin, times, type));
                                 DailyTaskFragment.adapter.notifyItemChanged(id);
                             }
                             else if (type == 1) {
-                                MainActivity.viewPager.setCurrentItem(1);
+                                TaskListFragment.viewPager.setCurrentItem(1);
                                 taskList0.remove(id);
                                 DailyTaskFragment.adapter.notifyItemRemoved(id);
                                 taskList1.add(new Task(title, coin, times, type));
                                 WeeklyTaskFragment.adapter.notifyItemInserted(taskList1.size());
                             }
                             else if (type == 2) {
-                                MainActivity.viewPager.setCurrentItem(2);
+                                TaskListFragment.viewPager.setCurrentItem(2);
                                 taskList0.remove(id);
                                 DailyTaskFragment.adapter.notifyItemRemoved(id);
                                 taskList2.add(new Task(title, coin, times, type));
@@ -242,7 +241,7 @@ public class DailyTaskFragment extends Fragment
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         // 删除任务
         // 获取当前Fragment的类型
-        int fragmentType = MainActivity.viewPager.getCurrentItem();
+        int fragmentType = TaskListFragment.viewPager.getCurrentItem();
         AlertDialog alertDialog;
         if (fragmentType == 0) {
             alertDialog = new AlertDialog.Builder(this.getContext())

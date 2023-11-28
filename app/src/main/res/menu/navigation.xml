@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/task"
+        android:icon="@drawable/ic_assignment_grey_36dp"
+        android:title="@string/task_name" />
+
+    <item
+        android:id="@+id/reward"
+        android:icon="@drawable/ic_gift_grey"
+        android:title="@string/reward_name" />
+
+</menu>

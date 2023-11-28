@@ -1,7 +1,6 @@
 package com.jnu.student;
 
 
-import static com.jnu.student.Task.Pinned_Tasks;
 import android.annotation.SuppressLint;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -114,14 +113,8 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         // 根据任务的置顶状态设置相应的图标
                         if (task.isPinned()) {
                             pinImageButton.setImageResource(R.drawable.pin_checked);
-                            if (!task.isCompleted()) {
-                                Pinned_Tasks++;
-                            }
                         } else {
                             pinImageButton.setImageResource(R.drawable.pin_unchecked);
-                            if (!task.isCompleted()) {
-                                Pinned_Tasks--;
-                            }
                         }
                     }
                 }
@@ -135,18 +128,10 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     if (checkBox.isChecked()){
                         Coins.coins = Coins.coins + Integer.parseInt(task.getCoin());
                         task.setComplete(task.getComplete()+1);
-                        if (task.isCompleted() && task.isPinned())
-                        {
-                            Pinned_Tasks--;
-                        }
                     }
                     else {
                         Coins.coins = Coins.coins - Integer.parseInt(task.getCoin());
                         task.setComplete(task.getComplete()-1);
-                        if (!(task.isCompleted()) && task.isPinned())
-                        {
-                            Pinned_Tasks++;
-                        }
                     }
                     // 发送信号刷新textview
                     if (signalListener != null) {
