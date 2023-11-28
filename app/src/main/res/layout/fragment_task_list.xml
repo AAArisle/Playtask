@@ -64,13 +64,6 @@
             android:textColor="@color/black"
             android:textSize="24sp" />
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ok" />
     </LinearLayout>
 
 </LinearLayout>

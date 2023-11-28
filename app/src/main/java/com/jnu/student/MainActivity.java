@@ -1,15 +1,25 @@
 package com.jnu.student;
 
 import static com.jnu.student.Coins.coins;
+import static com.jnu.student.Task.Pinned_Tasks;
 import static com.jnu.student.Task.taskList0;
 import static com.jnu.student.Task.taskList1;
 import static com.jnu.student.Task.taskList2;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -24,10 +34,14 @@ public class MainActivity extends AppCompatActivity {
     static ViewPager2 viewPager;
     private TabLayout tabLayout;
     Gson gson = new Gson();
+    private AlarmManager alarmMgr;
+    private PendingIntent dailyAlarmIntent;
+    private PendingIntent weeklyAlarmIntent;
 
     @Override
     public void onPause() {
         super.onPause();
+
         // 存储数据
         SharedPreferences sharedPreferences = getSharedPreferences("my_app_preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -37,7 +51,33 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("tasklist2", gson.toJson(taskList2));
 
         editor.putInt("coins", coins);
+        editor.putInt("pinned_tasks", Pinned_Tasks);
         editor.apply();
+        // 存储结束
+
+        // 如果有被钉住的未完成的任务，就显示一条通知
+        if (Pinned_Tasks > 0) {
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = new NotificationCompat.Builder(MainActivity.this, "your_channel_id")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("PlayTask")
+                    .setContentText(Pinned_Tasks + "个钉住的任务待完成")
+                    .setWhen(System.currentTimeMillis())
+                    .setOngoing(true) // 设置通知为持久通知
+                    .setContentIntent(PendingIntent.getActivity(
+                            this,0,new Intent(
+                                    this,MainActivity.class), PendingIntent.FLAG_IMMUTABLE))
+                    .build();
+            manager.notify(1, notification);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 取消通知
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(1); // 根据通知的ID取消对应的通知
     }
 
     @Override
@@ -61,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         coins = sharedPreferences.getInt("coins", 0);
+        Pinned_Tasks = sharedPreferences.getInt("pinned_tasks", 0);
         //导入结束
 
         setContentView(R.layout.activity_main);
@@ -91,5 +132,45 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).attach();
 
+        // 创建通知通道
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "your_channel_id",
+                    "钉住任务提示",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            channel.setShowBadge(false);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // 定时任务
+        alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent dailyIntent = new Intent(this, AlarmReceiver.class);
+        Intent weeklyIntent = new Intent(this, AlarmReceiver.class);
+        // 添加额外的标识来区分两种闹钟
+        dailyIntent.putExtra("alarmType", "daily");
+        weeklyIntent.putExtra("alarmType", "weekly");
+
+        dailyAlarmIntent = PendingIntent.getBroadcast(this, 0, dailyIntent, PendingIntent.FLAG_UPDATE_CURRENT| PendingIntent.FLAG_IMMUTABLE);
+        weeklyAlarmIntent = PendingIntent.getBroadcast(this, 1, weeklyIntent, PendingIntent.FLAG_UPDATE_CURRENT| PendingIntent.FLAG_IMMUTABLE);
+
+        // 每天凌晨2点刷新每日任务
+        Calendar dailyCalendar = Calendar.getInstance();
+        dailyCalendar.setTimeInMillis(System.currentTimeMillis());
+        dailyCalendar.set(Calendar.HOUR_OF_DAY, 2);
+        // 设置每隔一天执行一次
+        alarmMgr.setInexactRepeating(AlarmManager.RTC, dailyCalendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, dailyAlarmIntent);
+
+        // 每周一凌晨2点刷新每周任务
+        dailyCalendar.setTimeInMillis(System.currentTimeMillis());
+        dailyCalendar.set(Calendar.DAY_OF_WEEK, 2);
+        dailyCalendar.set(Calendar.HOUR_OF_DAY, 2);
+        // 设置每周一执行一次
+        alarmMgr.setInexactRepeating(AlarmManager.RTC, dailyCalendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, weeklyAlarmIntent);
     }
 }

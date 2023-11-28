@@ -1,10 +1,10 @@
 package com.jnu.student;
 
 
+import static com.jnu.student.Task.Pinned_Tasks;
 import android.annotation.SuppressLint;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Collections;
 import java.util.List;
 
 
@@ -115,8 +114,14 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         // 根据任务的置顶状态设置相应的图标
                         if (task.isPinned()) {
                             pinImageButton.setImageResource(R.drawable.pin_checked);
+                            if (!task.isCompleted()) {
+                                Pinned_Tasks++;
+                            }
                         } else {
                             pinImageButton.setImageResource(R.drawable.pin_unchecked);
+                            if (!task.isCompleted()) {
+                                Pinned_Tasks--;
+                            }
                         }
                     }
                 }
@@ -129,18 +134,28 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 public void onClick(View v) {
                     if (checkBox.isChecked()){
                         Coins.coins = Coins.coins + Integer.parseInt(task.getCoin());
+                        task.setComplete(task.getComplete()+1);
+                        if (task.isCompleted() && task.isPinned())
+                        {
+                            Pinned_Tasks--;
+                        }
                     }
                     else {
                         Coins.coins = Coins.coins - Integer.parseInt(task.getCoin());
+                        task.setComplete(task.getComplete()-1);
+                        if (!(task.isCompleted()) && task.isPinned())
+                        {
+                            Pinned_Tasks++;
+                        }
                     }
                     // 发送信号刷新textview
                     if (signalListener != null) {
                         signalListener.onSignalReceived();
                     }
                     // 更新任务的完成状态
-                    task.setCompleted(checkBox.isChecked());
                     checkBox.setChecked(task.isCompleted());
                     textViewTimes.setText(task.getComplete() +"/"+ task.getTimes());
+
                 }
             });
 
