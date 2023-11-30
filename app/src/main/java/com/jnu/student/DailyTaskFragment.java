@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
+import java.util.Objects;
 
 public class DailyTaskFragment extends Fragment
         implements RecycleViewTaskAdapter.SignalListener, RecycleViewTaskAdapter.OnItemClickListener{
@@ -128,6 +129,12 @@ public class DailyTaskFragment extends Fragment
         registerForContextMenu(recyclerView);       //注册ContextMenu
 
         coinsTextView = rootView.findViewById(R.id.textView_coins);
+        if (Coins.coins < 0) {
+            coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
+        }
+        else {
+            coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
+        }
         coinsTextView.setText(String.valueOf(Coins.coins));
 
         //添加任务的启动器
@@ -241,88 +248,99 @@ public class DailyTaskFragment extends Fragment
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         // 删除任务
         // 获取当前Fragment的类型
-        int fragmentType = TaskListFragment.viewPager.getCurrentItem();
+        int taskType = TaskListFragment.viewPager.getCurrentItem();
+        int fragmentType = MainActivity.bottomViewPager.getCurrentItem();
         AlertDialog alertDialog;
         if (fragmentType == 0) {
-            alertDialog = new AlertDialog.Builder(this.getContext())
-                    .setTitle("你正在删除每日任务")
-                    .setMessage("是否确定删除？")
-                    .setPositiveButton("删除", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            taskList0.remove(item.getOrder());
-                            DailyTaskFragment.adapter.notifyItemRemoved(item.getOrder());
-                            // 设置 Empty View 的可见性
-                            if (taskList0.size() == 0) {
-                                DailyTaskFragment.emptyTextView.setVisibility(View.VISIBLE);
+            if (taskType == 0) {
+                alertDialog = new AlertDialog.Builder(this.getContext())
+                        .setTitle("你正在删除每日任务")
+                        .setMessage("是否确定删除？")
+                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                taskList0.remove(item.getOrder());
+                                DailyTaskFragment.adapter.notifyItemRemoved(item.getOrder());
+                                // 设置 Empty View 的可见性
+                                if (taskList0.size() == 0) {
+                                    DailyTaskFragment.emptyTextView.setVisibility(View.VISIBLE);
+                                } else {
+                                    DailyTaskFragment.emptyTextView.setVisibility(View.GONE);
+                                }
                             }
-                            else{
-                                DailyTaskFragment.emptyTextView.setVisibility(View.GONE);
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
                             }
-                        }
-                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    }).create();
-            alertDialog.show();
-        }
-        else if (fragmentType == 1) {
-            alertDialog = new AlertDialog.Builder(this.getContext())
-                    .setTitle("你正在删除每周任务")
-                    .setMessage("是否确定删除？")
-                    .setPositiveButton("删除", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            taskList1.remove(item.getOrder());
-                            WeeklyTaskFragment.adapter.notifyItemRemoved(item.getOrder());
-                            // 设置 Empty View 的可见性
-                            if (taskList1.size() == 0){
-                                WeeklyTaskFragment.emptyTextView.setVisibility(View.VISIBLE);
+                        }).create();
+                alertDialog.show();
+            } else if (taskType == 1) {
+                alertDialog = new AlertDialog.Builder(this.getContext())
+                        .setTitle("你正在删除每周任务")
+                        .setMessage("是否确定删除？")
+                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                taskList1.remove(item.getOrder());
+                                WeeklyTaskFragment.adapter.notifyItemRemoved(item.getOrder());
+                                // 设置 Empty View 的可见性
+                                if (taskList1.size() == 0) {
+                                    WeeklyTaskFragment.emptyTextView.setVisibility(View.VISIBLE);
+                                } else {
+                                    WeeklyTaskFragment.emptyTextView.setVisibility(View.GONE);
+                                }
                             }
-                            else{
-                                WeeklyTaskFragment.emptyTextView.setVisibility(View.GONE);
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
                             }
-                        }
-                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    }).create();
-            alertDialog.show();
-        }
-        else if (fragmentType == 2) {
-            alertDialog = new AlertDialog.Builder(this.getContext())
-                    .setTitle("你正在删除普通任务")
-                    .setMessage("是否确定删除？")
-                    .setPositiveButton("删除", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            taskList2.remove(item.getOrder());
-                            NormalTaskFragment.adapter.notifyItemRemoved(item.getOrder());
-                            // 设置 Empty View 的可见性
-                            if (taskList2.size() == 0){
-                                NormalTaskFragment.emptyTextView.setVisibility(View.VISIBLE);
+                        }).create();
+                alertDialog.show();
+            } else if (taskType == 2) {
+                alertDialog = new AlertDialog.Builder(this.getContext())
+                        .setTitle("你正在删除普通任务")
+                        .setMessage("是否确定删除？")
+                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                taskList2.remove(item.getOrder());
+                                NormalTaskFragment.adapter.notifyItemRemoved(item.getOrder());
+                                // 设置 Empty View 的可见性
+                                if (taskList2.size() == 0) {
+                                    NormalTaskFragment.emptyTextView.setVisibility(View.VISIBLE);
+                                } else {
+                                    NormalTaskFragment.emptyTextView.setVisibility(View.GONE);
+                                }
                             }
-                            else{
-                                NormalTaskFragment.emptyTextView.setVisibility(View.GONE);
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
                             }
-                        }
-                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    }).create();
-            alertDialog.show();
+                        }).create();
+                alertDialog.show();
+            }
         }
         return super.onContextItemSelected(item);
     }
-    
+
     @Override
     public void onSignalReceived() {
+        if (Coins.coins < 0) {
+            DailyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
+            WeeklyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
+            NormalTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
+            RewardFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
+        }
+        else {
+            DailyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
+            WeeklyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
+            NormalTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
+            RewardFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
+        }
         DailyTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
         WeeklyTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
         NormalTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
+        RewardFragment.coinsTextView.setText(String.valueOf(Coins.coins));
     }
 
     @Override
@@ -330,7 +348,7 @@ public class DailyTaskFragment extends Fragment
         //使用菜单填充器获取menu下的菜单资源文件
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear(); // 清空菜单项
-        inflater.inflate(R.menu.tool_menu, menu);
+        inflater.inflate(R.menu.task_menu, menu);
     }
 
     @Override

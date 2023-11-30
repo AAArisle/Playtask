@@ -3,11 +3,14 @@
     <string name="task_name">任务</string>
     <string name="reward_name">奖励</string>
     <string name="add_name">新建任务</string>
+    <string name="add_reward_name">新建奖励</string>
     <string name="edit_name">编辑任务</string>
+    <string name="edit_reward_name">编辑奖励</string>
     <string name="sort_name">排序</string>
     <string name="add_menu">菜单</string>
     <string name="add_task">标题</string>
     <string name="add_coin">成就点数</string>
+    <string name="cost_coin">耗费的成就点数</string>
     <string name="add_num">数量（可选）</string>
     <string name="action_ok">完成</string>
     <string name="app_introduction">成就点数：指您每完成一次任务可获得的成就点数。\n
@@ -20,6 +23,16 @@
                                     参考：整理房间、给家里打电话\n
                                     \n
                                     普通任务：完成后不再重新出现。</string>
+    <string name="reward_introduction">欲望是您希望拥有、达成的事物。\n
+                                       \n
+                                       单次欲望：只需要满足一次的欲望。\n
+                                       参考：进行一次周边游、买一条Nudie Jeans牛仔裤。\n
+                                       \n
+                                       不限次欲望：可多次满足的欲望。\n
+                                       参考：打一把lol、约一场电影、吃一次甜品。\n
+                                       \n
+                                       建议将欲望消耗的成就点数根据您个人感觉的难易程度设置。
+                                    </string>
     <string name="task_empty">无任务\n
                               Yesterday, you said tomorrow.</string>
     <string name="reward_empty">无奖励\n

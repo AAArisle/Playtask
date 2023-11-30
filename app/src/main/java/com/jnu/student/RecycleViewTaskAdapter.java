@@ -43,7 +43,7 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item_layout, parent, false);
 
         return new TaskViewHolder(view);
     }
@@ -83,7 +83,7 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             super(itemView);
             checkBox = itemView.findViewById(R.id.checkBox);
             textViewCoin = itemView.findViewById(R.id.text_view_coin);
-            textViewTaskTitle = itemView.findViewById(R.id.text_view_task_title);
+            textViewTaskTitle = itemView.findViewById(R.id.text_view_reward_title);
             pinImageButton = itemView.findViewById(R.id.imageButton_pin);
             sortImageView = itemView.findViewById(R.id.imageView_sort);
             textViewTimes = itemView.findViewById(R.id.textView_times);

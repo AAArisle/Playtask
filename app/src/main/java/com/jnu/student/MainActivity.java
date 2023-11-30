@@ -1,6 +1,7 @@
 package com.jnu.student;
 
 import static com.jnu.student.Coins.coins;
+import static com.jnu.student.Reward.rewardList;
 import static com.jnu.student.Task.taskList0;
 import static com.jnu.student.Task.taskList1;
 import static com.jnu.student.Task.taskList2;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("tasklist0", gson.toJson(taskList0));
         editor.putString("tasklist1", gson.toJson(taskList1));
         editor.putString("tasklist2", gson.toJson(taskList2));
+
+        editor.putString("rewardlist", gson.toJson(rewardList));
 
         editor.putInt("coins", coins);
         editor.apply();
@@ -137,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         String tasklist0 = sharedPreferences.getString("tasklist0",null);
         String tasklist1 = sharedPreferences.getString("tasklist1",null);
         String tasklist2 = sharedPreferences.getString("tasklist2",null);
+        String rewardlist = sharedPreferences.getString("rewardlist",null);
         if (tasklist0 != null) {
             taskList0 = gson.fromJson(tasklist0, new TypeToken<List<Task>>() {}.getType());
         }
@@ -145,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (tasklist2 != null) {
             taskList2 = gson.fromJson(tasklist2, new TypeToken<List<Task>>() {}.getType());
+        }
+        if (rewardlist != null) {
+            rewardList = gson.fromJson(rewardlist, new TypeToken<List<Reward>>() {}.getType());
         }
 
         coins = sharedPreferences.getInt("coins", 0);

@@ -1,8 +1,5 @@
 package com.jnu.student;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,35 +10,34 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class EditTaskActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class EditRewardActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private EditText titleEditText;
     private EditText coinEditText;
-    private EditText timesEditText;
     private Spinner taskTpyeSpinner;
-    private final static String[] taskTypeArray = {"每日任务","每周任务","普通任务"};
+    private final static String[] rewardTypeArray = {"单次","不限"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_task);
+        setContentView(R.layout.activity_edit_reward);
 
         coinEditText = findViewById(R.id.editText_Coin);
         titleEditText = findViewById(R.id.edit_text_title);
-        timesEditText = findViewById(R.id.editText_Number);
         // 下拉栏
-        taskTpyeSpinner = findViewById(R.id.spinner_taskType);
+        taskTpyeSpinner = findViewById(R.id.spinner_rewardType);
 
         Intent intent = getIntent();
         int id = intent.getIntExtra("id",0);
         String title = intent.getStringExtra("title");
         String coin = intent.getStringExtra("coin");
-        int times = intent.getIntExtra("times",1);
         int type = intent.getIntExtra("type",0);
 
         // 把原来的信息显示出来
         titleEditText.setText(title);
         coinEditText.setText(coin);
-        timesEditText.setText(String.valueOf(times));
 
         // 设置修改按钮的点击事件
         Button addButton = findViewById(R.id.button_ok);
@@ -53,7 +49,6 @@ public class EditTaskActivity extends AppCompatActivity implements AdapterView.O
                 resultIntent.putExtra("title", titleEditText.getText().toString());
                 resultIntent.putExtra("coin",coinEditText.getText().toString());
                 resultIntent.putExtra("type", taskTpyeSpinner.getSelectedItemPosition());
-                resultIntent.putExtra("times", Integer.parseInt(timesEditText.getText().toString()));
                 resultIntent.putExtra("id",id);
 
                 // 设置结果码为RESULT_OK，表示成功修改
@@ -72,7 +67,7 @@ public class EditTaskActivity extends AppCompatActivity implements AdapterView.O
         }
 
         // 声明数组适配器
-        ArrayAdapter<String> startAdapter = new ArrayAdapter<>(this,R.layout.item_select, taskTypeArray);
+        ArrayAdapter<String> startAdapter = new ArrayAdapter<>(this,R.layout.item_select, rewardTypeArray);
         taskTpyeSpinner.setAdapter(startAdapter);
         // 设置显示原来的选项
         taskTpyeSpinner.setSelection(type);

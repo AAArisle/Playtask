@@ -126,6 +126,12 @@ public class NormalTaskFragment extends Fragment
         registerForContextMenu(recyclerView);       //注册ContextMenu
 
         coinsTextView = rootView.findViewById(R.id.textView_coins);
+        if (Coins.coins < 0) {
+            coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
+        }
+        else {
+            coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
+        }
         coinsTextView.setText(String.valueOf(Coins.coins));
 
         //添加任务的启动器
@@ -226,7 +232,7 @@ public class NormalTaskFragment extends Fragment
                             else if (type == 2) {
                                 TaskListFragment.viewPager.setCurrentItem(2);
                                 taskList2.set(id, new Task(title, coin, times, type));
-                                WeeklyTaskFragment.adapter.notifyItemChanged(id);
+                                NormalTaskFragment.adapter.notifyItemChanged(id);
                             }
                             // 设置 Empty View 的可见性
                             updateEmptyViewVisibility();
@@ -237,9 +243,22 @@ public class NormalTaskFragment extends Fragment
 
     @Override
     public void onSignalReceived() {
+        if (Coins.coins < 0) {
+            DailyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
+            WeeklyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
+            NormalTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
+            RewardFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
+        }
+        else {
+            DailyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
+            WeeklyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
+            NormalTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
+            RewardFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
+        }
         DailyTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
         WeeklyTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
         NormalTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
+        RewardFragment.coinsTextView.setText(String.valueOf(Coins.coins));
     }
 
     @Override
@@ -247,7 +266,7 @@ public class NormalTaskFragment extends Fragment
         //使用菜单填充器获取menu下的菜单资源文件
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear(); // 清空菜单项
-        inflater.inflate(R.menu.tool_menu, menu);
+        inflater.inflate(R.menu.task_menu, menu);
     }
 
     @Override
