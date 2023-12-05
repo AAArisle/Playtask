@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <CheckBox
@@ -28,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="任务名"
+                android:textColor="@color/dark_grey"
                 android:textSize="16sp" />
 
             <TextView
@@ -36,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="bottom"
                 android:text="0/1"
+                android:textColor="@color/light_grey"
                 android:textSize="14sp" />
         </LinearLayout>
 

@@ -18,24 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 
-
-public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RecycleViewOKTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Task> taskList;
     private Context mcontext;
-    private OnItemClickListener onItemClickListener;
     boolean isSortVisible = false;
 
-    public RecycleViewTaskAdapter(List<Task> taskList, Context context) {
+    public RecycleViewOKTaskAdapter(List<Task> taskList, Context context) {
         this.taskList = taskList;
         this.mcontext = context;
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.onItemClickListener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
     }
 
     @NonNull
@@ -52,15 +42,6 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         Task task = taskList.get(position);
         taskViewHolder.bind(task);
 
-        // 设置Item的点击事件监听器
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(position);
-                }
-            }
-        });
     }
 
     @Override
@@ -118,7 +99,8 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             });
 
-            checkBox.setChecked(task.isCompleted());
+            textViewTaskTitle.setTextColor(mcontext.getResources().getColor(R.color.light_grey, mcontext.getTheme()));
+            checkBox.setChecked(task.getComplete() > 0);
             // 设置 checkBox 的点击监听器，用于处理任务完成状态的变化
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,6 +114,12 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         task.setComplete(task.getComplete()-1);
                     }
                     // 刷新textview
+                    if (task.getComplete() > 0) {
+                        textViewTaskTitle.setTextColor(mcontext.getResources().getColor(R.color.light_grey, mcontext.getTheme()));
+                    }
+                    else {
+                        textViewTaskTitle.setTextColor(mcontext.getResources().getColor(R.color.dark_grey, mcontext.getTheme()));
+                    }
                     if (Coins.coins < 0) {
                         DailyTaskFragment.coinsTextView.setTextColor(mcontext.getResources().getColor(R.color.light_red, mcontext.getTheme()));
                         WeeklyTaskFragment.coinsTextView.setTextColor(mcontext.getResources().getColor(R.color.light_red, mcontext.getTheme()));
@@ -149,9 +137,8 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     NormalTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
                     RewardFragment.coinsTextView.setText(String.valueOf(Coins.coins));
                     // 更新任务的完成状态
-                    checkBox.setChecked(task.isCompleted());
+                    checkBox.setChecked(task.getComplete() > 0);
                     textViewTimes.setText(task.getComplete() +"/"+ task.getTimes());
-
                 }
             });
 
@@ -164,11 +151,7 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
 
         @Override
-        public void onCreateContextMenu(ContextMenu menu, View v,
-                                        ContextMenu.ContextMenuInfo menuInfo) {
-            if (!isSortVisible) {
-                menu.add(0, 1, this.getAdapterPosition(), "删除");
-            }
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
         }
     }
 }

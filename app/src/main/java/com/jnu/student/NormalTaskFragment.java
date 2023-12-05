@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -23,13 +24,16 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class NormalTaskFragment extends Fragment
-        implements RecycleViewTaskAdapter.SignalListener, RecycleViewTaskAdapter.OnItemClickListener {
+        implements RecycleViewTaskAdapter.OnItemClickListener {
     private RecyclerView recyclerView;
     static TextView emptyTextView;
     static TextView coinsTextView;
+    static ImageButton okImageButton;
     static RecycleViewTaskAdapter adapter;
     private ActivityResultLauncher<Intent> addTaskLauncher;
     private ActivityResultLauncher<Intent> editTaskLauncher;
@@ -69,9 +73,8 @@ public class NormalTaskFragment extends Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setLongClickable(true);
 
-        adapter = new RecycleViewTaskAdapter(taskList2);
+        adapter = new RecycleViewTaskAdapter(taskList2, this.getContext());
         recyclerView.setAdapter(adapter);
-        adapter.setSignalListener(this);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
             @Override
@@ -133,6 +136,44 @@ public class NormalTaskFragment extends Fragment
             coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
         }
         coinsTextView.setText(String.valueOf(Coins.coins));
+
+        okImageButton = rootView.findViewById(R.id.imageButton_ok);
+        okImageButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if (okImageButton.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ok, getContext().getTheme()).getConstantState())){
+                    List<Task> taskList_ok = new ArrayList<>();
+                    for (Task task: taskList2) {
+                        if (task.getComplete() > 0){
+                            taskList_ok.add(task);
+                        }
+                    }
+                    emptyTextView.setText(R.string.completed_empty);
+                    // 初始化 Empty View 的可见性
+                    if (taskList_ok.size() == 0) {
+                        emptyTextView.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        emptyTextView.setVisibility(View.GONE);
+                    }
+                    RecycleViewOKTaskAdapter adapter_ok = new RecycleViewOKTaskAdapter(taskList_ok, getContext());
+                    recyclerView.setAdapter(adapter_ok);
+                    okImageButton.setImageResource(R.drawable.ok_checked);
+                }
+                else {
+                    emptyTextView.setText(R.string.task_empty);
+                    // 初始化 Empty View 的可见性
+                    if (taskList2.size() == 0) {
+                        emptyTextView.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        emptyTextView.setVisibility(View.GONE);
+                    }
+                    recyclerView.setAdapter(adapter);
+                    okImageButton.setImageResource(R.drawable.ok);
+                }
+            }
+        });
 
         //添加任务的启动器
         addTask();
@@ -239,26 +280,6 @@ public class NormalTaskFragment extends Fragment
                         }
                     }
                 });
-    }
-
-    @Override
-    public void onSignalReceived() {
-        if (Coins.coins < 0) {
-            DailyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
-            WeeklyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
-            NormalTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
-            RewardFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
-        }
-        else {
-            DailyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
-            WeeklyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
-            NormalTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
-            RewardFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
-        }
-        DailyTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
-        WeeklyTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
-        NormalTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
-        RewardFragment.coinsTextView.setText(String.valueOf(Coins.coins));
     }
 
     @Override

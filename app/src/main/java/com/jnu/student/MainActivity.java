@@ -117,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
         bottomViewPager.setOffscreenPageLimit(bottomAdapter.getItemCount());
         // 禁用用户输入（左右滑动）
         bottomViewPager.setUserInputEnabled(false);
+        // 刷新菜单
+        bottomViewPager.setCurrentItem(1);
+        bottomViewPager.setCurrentItem(0);
 
         bottomMenu.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener()
         {

@@ -35,6 +35,8 @@
                                     </string>
     <string name="task_empty">无任务\n
                               Yesterday, you said tomorrow.</string>
+    <string name="completed_empty">无已完成任务\n
+                                   Action speak louder than words.</string>
     <string name="reward_empty">无奖励\n
                                 Freud believed that, there are many primitive desires and impulses stored in the human subconscious.</string>
 </resources>

@@ -5,6 +5,7 @@ import static com.jnu.student.Reward.rewardList;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -22,16 +23,13 @@ import java.util.List;
 
 public class RecycleViewRewardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     List<Reward> rewardList;
-    private static SignalListener signalListener;
+    private Context mcontext;
     private OnItemClickListener onItemClickListener;
     boolean isSortVisible = false;
 
-    public void setSignalListener(SignalListener listener) {
-        signalListener = listener;
-    }
-
-    public RecycleViewRewardAdapter(List<Reward> rewardList) {
+    public RecycleViewRewardAdapter(List<Reward> rewardList, Context context) {
         this.rewardList = rewardList;
+        this.mcontext = context;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -112,10 +110,23 @@ public class RecycleViewRewardAdapter extends RecyclerView.Adapter<RecyclerView.
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     coins = coins - Integer.parseInt(reward.getCoin());
                                     reward.setComplete(reward.getComplete()+1);
-                                    // 发送信号刷新textview
-                                    if (signalListener != null) {
-                                        signalListener.onSignalReceived();
+                                    // 刷新textview
+                                    if (Coins.coins < 0) {
+                                        DailyTaskFragment.coinsTextView.setTextColor(mcontext.getResources().getColor(R.color.light_red, mcontext.getTheme()));
+                                        WeeklyTaskFragment.coinsTextView.setTextColor(mcontext.getResources().getColor(R.color.light_red, mcontext.getTheme()));
+                                        NormalTaskFragment.coinsTextView.setTextColor(mcontext.getResources().getColor(R.color.light_red, mcontext.getTheme()));
+                                        RewardFragment.coinsTextView.setTextColor(mcontext.getResources().getColor(R.color.light_red, mcontext.getTheme()));
                                     }
+                                    else {
+                                        DailyTaskFragment.coinsTextView.setTextColor(mcontext.getResources().getColor(R.color.black, mcontext.getTheme()));
+                                        WeeklyTaskFragment.coinsTextView.setTextColor(mcontext.getResources().getColor(R.color.black, mcontext.getTheme()));
+                                        NormalTaskFragment.coinsTextView.setTextColor(mcontext.getResources().getColor(R.color.black, mcontext.getTheme()));
+                                        RewardFragment.coinsTextView.setTextColor(mcontext.getResources().getColor(R.color.black, mcontext.getTheme()));
+                                    }
+                                    DailyTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
+                                    WeeklyTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
+                                    NormalTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
+                                    RewardFragment.coinsTextView.setText(String.valueOf(Coins.coins));
                                     // 处理单次奖励的删除
                                     if (reward.getType() == 0) {
                                         textViewTimes.setText(reward.getComplete() + "/1");
@@ -160,9 +171,5 @@ public class RecycleViewRewardAdapter extends RecyclerView.Adapter<RecyclerView.
             }
         }
 
-    }
-
-    public interface SignalListener {
-        void onSignalReceived();
     }
 }

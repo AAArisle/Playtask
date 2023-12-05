@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 public class RewardFragment extends Fragment
-        implements RecycleViewRewardAdapter.SignalListener, RecycleViewRewardAdapter.OnItemClickListener{
+        implements RecycleViewRewardAdapter.OnItemClickListener{
     private RecyclerView recyclerView;
     static TextView emptyTextView;
     static TextView coinsTextView;
@@ -69,9 +69,8 @@ public class RewardFragment extends Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setLongClickable(true);
 
-        adapter = new RecycleViewRewardAdapter(rewardList);
+        adapter = new RecycleViewRewardAdapter(rewardList, this.getContext());
         recyclerView.setAdapter(adapter);
-        adapter.setSignalListener(this);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
             @Override
@@ -227,26 +226,6 @@ public class RewardFragment extends Fragment
             alertDialog.show();
         }
         return super.onContextItemSelected(item);
-    }
-
-    @Override
-    public void onSignalReceived() {
-        if (Coins.coins < 0) {
-            DailyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
-            WeeklyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
-            NormalTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
-            RewardFragment.coinsTextView.setTextColor(getResources().getColor(R.color.light_red, requireContext().getTheme()));
-        }
-        else {
-            DailyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
-            WeeklyTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
-            NormalTaskFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
-            RewardFragment.coinsTextView.setTextColor(getResources().getColor(R.color.black, requireContext().getTheme()));
-        }
-        DailyTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
-        WeeklyTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
-        NormalTaskFragment.coinsTextView.setText(String.valueOf(Coins.coins));
-        RewardFragment.coinsTextView.setText(String.valueOf(Coins.coins));
     }
 
     @Override
