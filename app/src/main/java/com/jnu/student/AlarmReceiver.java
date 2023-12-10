@@ -1,11 +1,13 @@
 package com.jnu.student;
 
-import static com.jnu.student.Task.taskList0;
-import static com.jnu.student.Task.taskList1;
+import static com.jnu.student.tasks.Task.taskList0;
+import static com.jnu.student.tasks.Task.taskList1;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import com.jnu.student.tasks.Task;
 
 public class AlarmReceiver extends BroadcastReceiver {
     @Override

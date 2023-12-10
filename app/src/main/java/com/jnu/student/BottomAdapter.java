@@ -6,6 +6,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.jnu.student.rewards.RewardFragment;
+import com.jnu.student.tasks.TaskListFragment;
+
 public class BottomAdapter extends FragmentStateAdapter {
     public BottomAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);

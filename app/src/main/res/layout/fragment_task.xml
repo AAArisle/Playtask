@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:longClickable="true"
     android:orientation="vertical"
-    tools:context=".DailyTaskFragment">
+    tools:context=".tasks.DailyTaskFragment">
 
     <ImageView
         android:id="@+id/imageView_divider1"

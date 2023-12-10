@@ -25,22 +25,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EditTaskActivity"
+            android:name=".tasks.EditTaskActivity"
             android:label="@string/edit_name"
             android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".AddTaskActivity"
+            android:name=".tasks.AddTaskActivity"
             android:label="@string/add_name"
             android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".EditRewardActivity"
+            android:name=".rewards.EditRewardActivity"
             android:label="@string/edit_reward_name"
             android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".AddRewardActivity"
+            android:name=".rewards.AddRewardActivity"
             android:label="@string/add_reward_name"
             android:parentActivityName=".MainActivity"
             android:exported="false" />

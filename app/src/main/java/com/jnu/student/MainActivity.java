@@ -1,10 +1,10 @@
 package com.jnu.student;
 
 import static com.jnu.student.Coins.coins;
-import static com.jnu.student.Reward.rewardList;
-import static com.jnu.student.Task.taskList0;
-import static com.jnu.student.Task.taskList1;
-import static com.jnu.student.Task.taskList2;
+import static com.jnu.student.rewards.Reward.rewardList;
+import static com.jnu.student.tasks.Task.taskList0;
+import static com.jnu.student.tasks.Task.taskList1;
+import static com.jnu.student.tasks.Task.taskList2;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -22,20 +22,19 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jnu.student.rewards.Reward;
+import com.jnu.student.tasks.Task;
 
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    static ViewPager2 bottomViewPager;
+    public static ViewPager2 bottomViewPager;
     private BottomNavigationView bottomMenu;
     Gson gson = new Gson();
     private AlarmManager alarmMgr;
