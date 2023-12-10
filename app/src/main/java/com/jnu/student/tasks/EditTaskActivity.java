@@ -3,17 +3,21 @@ package com.jnu.student.tasks;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.jnu.student.R;
+
+import java.math.BigInteger;
 
 public class EditTaskActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private EditText titleEditText;
@@ -36,13 +40,13 @@ public class EditTaskActivity extends AppCompatActivity implements AdapterView.O
         Intent intent = getIntent();
         int id = intent.getIntExtra("id",0);
         String title = intent.getStringExtra("title");
-        String coin = intent.getStringExtra("coin");
+        int coin = intent.getIntExtra("coin", 0);
         int times = intent.getIntExtra("times",1);
         int type = intent.getIntExtra("type",0);
 
         // 把原来的信息显示出来
         titleEditText.setText(title);
-        coinEditText.setText(coin);
+        coinEditText.setText(String.valueOf(coin));
         timesEditText.setText(String.valueOf(times));
 
         // 设置修改按钮的点击事件
@@ -50,10 +54,22 @@ public class EditTaskActivity extends AppCompatActivity implements AdapterView.O
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(TextUtils.isEmpty(titleEditText.getText())){
+                    Toast.makeText(EditTaskActivity.this,"请输入标题",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(coinEditText.getText())){
+                    Toast.makeText(EditTaskActivity.this,"请输入成就点数",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (new BigInteger(coinEditText.getText().toString()).compareTo(BigInteger.valueOf(2147483647)) == 1) {
+                    Toast.makeText(EditTaskActivity.this, "请输入合理的成就点数（不支持小数）", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 // 创建一个包含修改后信息的Intent
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("title", titleEditText.getText().toString());
-                resultIntent.putExtra("coin",coinEditText.getText().toString());
+                resultIntent.putExtra("coin",Integer.parseInt(coinEditText.getText().toString()));
                 resultIntent.putExtra("type", taskTpyeSpinner.getSelectedItemPosition());
                 resultIntent.putExtra("times", Integer.parseInt(timesEditText.getText().toString()));
                 resultIntent.putExtra("id",id);

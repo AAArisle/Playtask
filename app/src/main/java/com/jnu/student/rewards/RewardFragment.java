@@ -156,7 +156,7 @@ public class RewardFragment extends Fragment
                         Intent data = result.getData();
                         if (data != null) {
                             String title = data.getStringExtra("title");
-                            String coin = data.getStringExtra("coin");
+                            int coin = data.getIntExtra("coin", 0);
                             int type = data.getIntExtra("type", 0);
 
                             rewardList.add(new Reward(title, coin, type));
@@ -181,7 +181,7 @@ public class RewardFragment extends Fragment
                         Intent data = result.getData();
                         if (data != null) {
                             String title = data.getStringExtra("title");
-                            String coin = data.getStringExtra("coin");
+                            int coin = data.getIntExtra("coin", 0);
                             int type = data.getIntExtra("type", 0);
                             int id = data.getIntExtra("id", 0);
 
@@ -212,8 +212,10 @@ public class RewardFragment extends Fragment
                     .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            rewardList.remove(item.getOrder());
-                            RewardFragment.adapter.notifyItemRemoved(item.getOrder());
+                            int rewardPosition = item.getOrder();
+                            rewardList.remove(rewardPosition);
+                            RewardFragment.adapter.notifyItemRemoved(rewardPosition);
+                            RewardFragment.adapter.notifyItemRangeChanged(rewardPosition, rewardList.size() - rewardPosition);
                             // 设置 Empty View 的可见性
                             if (rewardList.size() == 0) {
                                 RewardFragment.emptyTextView.setVisibility(View.VISIBLE);

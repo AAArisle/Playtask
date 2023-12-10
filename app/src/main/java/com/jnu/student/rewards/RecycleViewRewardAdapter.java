@@ -112,7 +112,7 @@ public class RecycleViewRewardAdapter extends RecyclerView.Adapter<RecyclerView.
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    coins = coins - Integer.parseInt(reward.getCoin());
+                                    coins = coins - reward.getCoin();
                                     reward.setComplete(reward.getComplete()+1);
                                     // 刷新textview
                                     if (Coins.coins < 0) {
@@ -134,8 +134,10 @@ public class RecycleViewRewardAdapter extends RecyclerView.Adapter<RecyclerView.
                                     // 处理单次奖励的删除
                                     if (reward.getType() == 0) {
                                         textViewTimes.setText(reward.getComplete() + "/1");
-                                        rewardList.remove(reward);
-                                        notifyItemRemoved(getAdapterPosition());
+                                        int rewardPosition = getAdapterPosition();
+                                        rewardList.remove(rewardPosition);
+                                        notifyItemRemoved(rewardPosition);
+                                        notifyItemRangeChanged(rewardPosition, rewardList.size() - rewardPosition);
                                         // 设置 Empty View 的可见性
                                         if (rewardList.size() == 0) {
                                             RewardFragment.emptyTextView.setVisibility(View.VISIBLE);

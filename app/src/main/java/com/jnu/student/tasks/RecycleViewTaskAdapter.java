@@ -128,11 +128,11 @@ public class RecycleViewTaskAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onClick(View v) {
                     if (checkBox.isChecked()){
-                        Coins.coins = Coins.coins + Integer.parseInt(task.getCoin());
+                        Coins.coins = Coins.coins + task.getCoin();
                         task.setComplete(task.getComplete()+1);
                     }
                     else {
-                        Coins.coins = Coins.coins - Integer.parseInt(task.getCoin());
+                        Coins.coins = Coins.coins - task.getCoin();
                         task.setComplete(task.getComplete()-1);
                     }
                     // 刷新textview

@@ -86,8 +86,10 @@ public class TaskListFragment extends Fragment {
                         .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                taskList0.remove(item.getOrder());
-                                DailyTaskFragment.adapter.notifyItemRemoved(item.getOrder());
+                                int taskPosition = item.getOrder();
+                                taskList0.remove(taskPosition);
+                                DailyTaskFragment.adapter.notifyItemRemoved(taskPosition);
+                                DailyTaskFragment.adapter.notifyItemRangeChanged(taskPosition, taskList0.size() - taskPosition);
                                 // 设置 Empty View 的可见性
                                 if (taskList0.size() == 0) {
                                     DailyTaskFragment.emptyTextView.setVisibility(View.VISIBLE);
@@ -108,8 +110,10 @@ public class TaskListFragment extends Fragment {
                         .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                taskList1.remove(item.getOrder());
-                                WeeklyTaskFragment.adapter.notifyItemRemoved(item.getOrder());
+                                int taskPosition = item.getOrder();
+                                taskList1.remove(taskPosition);
+                                WeeklyTaskFragment.adapter.notifyItemRemoved(taskPosition);
+                                WeeklyTaskFragment.adapter.notifyItemRangeChanged(taskPosition, taskList1.size() - taskPosition);
                                 // 设置 Empty View 的可见性
                                 if (taskList1.size() == 0) {
                                     WeeklyTaskFragment.emptyTextView.setVisibility(View.VISIBLE);
@@ -130,8 +134,10 @@ public class TaskListFragment extends Fragment {
                         .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                taskList2.remove(item.getOrder());
-                                NormalTaskFragment.adapter.notifyItemRemoved(item.getOrder());
+                                int taskPosition = item.getOrder();
+                                taskList2.remove(taskPosition);
+                                NormalTaskFragment.adapter.notifyItemRemoved(taskPosition);
+                                NormalTaskFragment.adapter.notifyItemRangeChanged(taskPosition, taskList2.size() - taskPosition);
                                 // 设置 Empty View 的可见性
                                 if (taskList2.size() == 0) {
                                     NormalTaskFragment.emptyTextView.setVisibility(View.VISIBLE);

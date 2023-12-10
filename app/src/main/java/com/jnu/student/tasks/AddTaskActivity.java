@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.jnu.student.R;
 
+import java.math.BigInteger;
+
 public class AddTaskActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     // 新任务信息的EditText
     private EditText titleEditText;
@@ -52,10 +54,14 @@ public class AddTaskActivity extends AppCompatActivity implements AdapterView.On
                     Toast.makeText(AddTaskActivity.this,"请输入成就点数",Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (new BigInteger(coinEditText.getText().toString()).compareTo(BigInteger.valueOf(2147483647)) == 1) {
+                    Toast.makeText(AddTaskActivity.this, "请输入合理的成就点数（不支持小数）", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 // 创建一个包含新任务信息的Intent
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("title", titleEditText.getText().toString());
-                resultIntent.putExtra("coin", coinEditText.getText().toString());
+                resultIntent.putExtra("coin", Integer.parseInt(coinEditText.getText().toString()));
                 if (!(timesEditText.getText().toString().isEmpty())){
                     resultIntent.putExtra("times", Integer.parseInt(timesEditText.getText().toString()));
                 }

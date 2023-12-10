@@ -8,13 +8,13 @@ public class Task {
     public static List<Task> taskList1 = new ArrayList<>(); //每周任务
     public static List<Task> taskList2 = new ArrayList<>(); //普通任务
     private String title;
-    private String coin;
+    private int coin;
     private int type;
     private int pin = 0;
     private int complete = 0;
-    private int times = 1;
+    private int times;
 
-    public Task(String title, String coin, int times, int type) {
+    public Task(String title, int coin, int times, int type) {
         this.title = title;
         this.coin = coin;
         this.times = times;
@@ -27,7 +27,7 @@ public class Task {
     }
 
     //返回任务积分
-    public String getCoin() {
+    public int getCoin() {
         return coin;
     }
 

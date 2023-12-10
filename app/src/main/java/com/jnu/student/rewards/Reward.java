@@ -6,11 +6,11 @@ import java.util.List;
 public class Reward {
     public static List<Reward> rewardList = new ArrayList<>(); // 奖励列表
     private String title;
-    private String coin;
+    private int coin;
     private int type;
     private int complete = 0;
 
-    public Reward(String title, String coin, int type){
+    public Reward(String title, int coin, int type){
         this.title = title;
         this.coin = coin;
         this.type = type;
@@ -22,7 +22,7 @@ public class Reward {
     }
 
     //返回成就点数
-    public String getCoin() {
+    public int getCoin() {
         return coin;
     }
 

@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.jnu.student.R;
 
+import java.math.BigInteger;
+
 public class AddRewardActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     // 新奖励信息的EditText
     private EditText titleEditText;
@@ -50,10 +52,14 @@ public class AddRewardActivity extends AppCompatActivity implements AdapterView.
                     Toast.makeText(AddRewardActivity.this,"请输入成就点数",Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (new BigInteger(coinEditText.getText().toString()).compareTo(BigInteger.valueOf(2147483647)) == 1) {
+                    Toast.makeText(AddRewardActivity.this, "请输入合理的成就点数（不支持小数）", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 // 创建一个包含新奖励信息的Intent
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("title", titleEditText.getText().toString());
-                resultIntent.putExtra("coin", coinEditText.getText().toString());
+                resultIntent.putExtra("coin", Integer.parseInt(coinEditText.getText().toString()));
                 resultIntent.putExtra("type", rewardTypeSpinner.getSelectedItemPosition());
 
                 // 设置结果码为RESULT_OK，表示成功添加

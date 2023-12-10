@@ -225,7 +225,7 @@ public class WeeklyTaskFragment extends Fragment
                         Intent data = result.getData();
                         if (data != null) {
                             String title = data.getStringExtra("title");
-                            String coin = data.getStringExtra("coin");
+                            int coin = data.getIntExtra("coin", 0);
                             int times = data.getIntExtra("times", 1);
                             int type = data.getIntExtra("type", 0);
                             if (type == 0) {
@@ -262,7 +262,7 @@ public class WeeklyTaskFragment extends Fragment
                         Intent data = result.getData();
                         if (data != null) {
                             String title = data.getStringExtra("title");
-                            String coin = data.getStringExtra("coin");
+                            int coin = data.getIntExtra("coin", 0);
                             int type = data.getIntExtra("type",0);
                             int times = data.getIntExtra("times",1);
                             int id = data.getIntExtra("id",0);

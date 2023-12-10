@@ -34,12 +34,12 @@ public class EditRewardActivity extends AppCompatActivity implements AdapterView
         Intent intent = getIntent();
         int id = intent.getIntExtra("id",0);
         String title = intent.getStringExtra("title");
-        String coin = intent.getStringExtra("coin");
+        int coin = intent.getIntExtra("coin", 0);
         int type = intent.getIntExtra("type",0);
 
         // 把原来的信息显示出来
         titleEditText.setText(title);
-        coinEditText.setText(coin);
+        coinEditText.setText(String.valueOf(coin));
 
         // 设置修改按钮的点击事件
         Button addButton = findViewById(R.id.button_ok);
@@ -49,7 +49,7 @@ public class EditRewardActivity extends AppCompatActivity implements AdapterView
                 // 创建一个包含修改后信息的Intent
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("title", titleEditText.getText().toString());
-                resultIntent.putExtra("coin",coinEditText.getText().toString());
+                resultIntent.putExtra("coin",Integer.parseInt(coinEditText.getText().toString()));
                 resultIntent.putExtra("type", taskTpyeSpinner.getSelectedItemPosition());
                 resultIntent.putExtra("id",id);
 
