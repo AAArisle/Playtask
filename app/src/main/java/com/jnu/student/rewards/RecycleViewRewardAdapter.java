@@ -156,7 +156,9 @@ public class RecycleViewRewardAdapter extends RecyclerView.Adapter<RecyclerView.
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     checkBox.setChecked(false);
                                 }
-                            }).create();
+                            })
+                            .setCancelable(false) // 设置对话框不可以通过点击区域外被取消
+                            .create();
                     alertDialog.show();
                 }
             });
